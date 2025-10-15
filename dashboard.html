@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard — Billets</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-white text-slate-900">
+  <header class="sticky top-0 bg-white/80 backdrop-blur border-b z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+      <a href="index.html"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Euro_symbol_black.svg" class="w-8 h-8"></a>
+      <h1 class="text-lg font-bold">Dashboard</h1>
+      <nav class="ml-auto flex gap-2">
+        <a class="px-3 py-1 rounded" href="index.html">Accueil</a>
+        <a class="px-3 py-1 rounded" href="analyse.html">Analyse</a>
+        <a class="px-3 py-1 rounded bg-slate-100" href="dashboard.html">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold">📊 Vue d'ensemble</h2>
+    <div id="kpis" class="grid grid-cols-3 gap-4 mt-4"></div>
+    <div class="mt-6">
+      <canvas id="trend"></canvas>
+    </div>
+    <div class="mt-6">
+      <h3 class="font-semibold">Dernières analyses</h3>
+      <div id="list" class="mt-2 text-sm"></div>
+    </div>
+  </main>
+
+  <script>
+    const hist = JSON.parse(localStorage.getItem('history')||'[]').slice(-50);
+    const total = hist.reduce((s,x)=>s+(x.total||0),0);
+    const vrai = hist.reduce((s,x)=>s+(x.vrai||0),0);
+    const faux = hist.reduce((s,x)=>s+(x.faux||0),0);
+    const k = (title,val) => `<div class="p-4 rounded-xl border"><div class="text-slate-500 text-xs">${title}</div><div class="text-xl font-extrabold">${val}</div></div>`;
+    document.getElementById('kpis').innerHTML = k('Total analysé', total)+k('Billets validés', vrai)+k('Faux billets', faux);
+
+    // Trend chart
+    const ctx = document.getElementById('trend').getContext('2d');
+    const labels = hist.map(h=> new Date(h.date).toLocaleString());
+    const dataVrai = hist.map(h=>h.vrai||0);
+    const dataFaux = hist.map(h=>h.faux||0);
+    new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [{label:'Vrai', data: dataVrai, borderColor:'#22c55e', fill:false},{label:'Faux', data: dataFaux, borderColor:'#ef4444', fill:false}] },
+    });
+
+    // list
+    const list = hist.slice().reverse().map(h=>`<div class="p-2 border-b"><div class="text-xs text-slate-500">${new Date(h.date).toLocaleString()}</div><div class="font-semibold">${h.total} — V:${h.vrai} • F:${h.faux}</div></div>`).join('');
+    document.getElementById('list').innerHTML = list || '<div class="text-slate-500">Aucune analyse trouvé</div>';
+  </script>
+</body>
+</html>
+

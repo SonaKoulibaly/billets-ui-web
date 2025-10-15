@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Analyse — Billets</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.API_BASE="https://billets-api-1.onrender.com";</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="bg-white text-slate-900">
+  <header class="sticky top-0 bg-white/80 backdrop-blur border-b z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+      <a href="index.html"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Euro_symbol_black.svg" class="w-8 h-8"></a>
+      <h1 class="text-lg font-bold">Analyse</h1>
+      <nav class="ml-auto flex gap-2">
+        <a class="px-3 py-1 rounded" href="index.html">Accueil</a>
+        <a class="px-3 py-1 rounded bg-slate-100" href="analyse.html">Analyse</a>
+        <a class="px-3 py-1 rounded" href="dashboard.html">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold">🔮 Analyse des billets</h2>
+    <p class="text-sm text-slate-600">Saisis un billet ou upload un CSV contenant les colonnes : diagonal, height_left, height_right, margin_low, margin_up, length</p>
+
+    <div class="grid md:grid-cols-2 gap-6 mt-6">
+      <!-- Saisie 1 billet -->
+      <section class="p-4 rounded-lg border">
+        <h3 class="font-semibold">✏️ Prédire un seul billet</h3>
+        <div class="grid grid-cols-2 gap-2 mt-3">
+          <input id="length" class="input" placeholder="length" type="number" step="0.01" value="140">
+          <input id="height_left" class="input" placeholder="height_left" type="number" step="0.01" value="74">
+          <input id="height_right" class="input" placeholder="height_right" type="number" step="0.01" value="73.8">
+          <input id="margin_low" class="input" placeholder="margin_low" type="number" step="0.01" value="6">
+          <input id="margin_up" class="input" placeholder="margin_up" type="number" step="0.01" value="8">
+          <input id="diagonal" class="input" placeholder="diagonal" type="number" step="0.01" value="160">
+        </div>
+        <div class="mt-4 flex gap-2">
+          <button id="btn-one" class="px-4 py-2 rounded-full bg-emerald-500 text-white font-bold">Lancer</button>
+          <button id="btn-one-demo" class="px-4 py-2 rounded-full border">Simuler</button>
+        </div>
+        <div id="one-out" class="mt-4 text-sm"></div>
+      </section>
+
+      <!-- Upload CSV -->
+      <section class="p-4 rounded-lg border">
+        <h3 class="font-semibold">📥 Prédire un fichier CSV</h3>
+        <input id="csv" type="file" accept=".csv" class="mt-2">
+        <div class="mt-3 flex gap-2">
+          <button id="btn-csv" class="px-4 py-2 rounded-full bg-emerald-600 text-white font-bold">Analyser CSV</button>
+          <button id="btn-csv-demo" class="px-4 py-2 rounded-full border">Simuler</button>
+        </div>
+
+        <div id="kpis" class="grid grid-cols-3 gap-3 mt-4"></div>
+        <canvas id="pie" class="mt-4 max-w-sm"></canvas>
+        <div id="table" class="mt-4 text-sm overflow-x-auto"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="assets/app.js"></script>
+  <style>.input{padding:.6rem .8rem;border:1px solid #e6e9ef;border-radius:.5rem}</style>
+</body>
+</html>
+

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Profil — Billets</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-slate-900">
+  <header class="sticky top-0 bg-white/80 backdrop-blur border-b z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+      <a href="index.html"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Euro_symbol_black.svg" class="w-8 h-8"></a>
+      <h1 class="text-lg font-bold">Profil</h1>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold">Mon profil</h2>
+    <div class="mt-4 p-4 border rounded">
+      <label class="block text-sm">Mode</label>
+      <select id="mode" class="mt-2 p-2 border rounded">
+        <option value="light">Clair</option>
+        <option value="dark">Sombre</option>
+      </select>
+
+      <label class="block text-sm mt-4">Couleur principale</label>
+      <input id="color" type="color" value="#22c55e" class="mt-2" />
+
+      <div class="mt-4">
+        <button id="save" class="px-4 py-2 rounded bg-emerald-500 text-white">Sauvegarder</button>
+      </div>
+    </div>
+
+    <div class="mt-6 text-sm text-slate-600">
+      <p>Les préférences sont stockées localement (localStorage). Pour un système multi-utilisateur il faudra une base & auth côté backend.</p>
+    </div>
+  </main>
+
+  <script>
+    const modeEl = document.getElementById('mode'), colorEl = document.getElementById('color');
+    const settings = JSON.parse(localStorage.getItem('ui_settings')||'{}');
+    if (settings.mode) modeEl.value = settings.mode;
+    if (settings.color) colorEl.value = settings.color;
+    document.getElementById('save').onclick = () => {
+      const s = { mode: modeEl.value, color: colorEl.value };
+      localStorage.setItem('ui_settings', JSON.stringify(s));
+      alert('Préférences sauvegardées (localStorage). Recharge la page pour voir les changements.');
+    };
+  </script>
+</body>
+</html>
